@@ -28,7 +28,7 @@
    eJxjYBgF9ATyDAwJ5OCBdvdgB5k0MreURuaOAtoAAE1cB9E=
   </data>
  </layer>
- <objectgroup name="floorspace" width="22" height="14">
+ <objectgroup draworder="topdown" name="floorspace" width="22" height="14">
   <object x="363" y="266" width="62" height="15">
    <properties>
     <property name="height" value="15"/>
@@ -47,15 +47,7 @@
    <polygon points="0,0 96,-96 432,-96 528,0"/>
   </object>
  </objectgroup>
- <objectgroup color="#ff0000" name="nodes" width="22" height="14">
-  <object type="sprite" x="447" y="144" width="24" height="48">
-   <properties>
-    <property name="animation" value="1-4,1"/>
-    <property name="height" value="48"/>
-    <property name="sheet" value="images/sprites/town/torch.png"/>
-    <property name="width" value="24"/>
-   </properties>
-  </object>
+ <objectgroup color="#ff0000" draworder="topdown" name="nodes" width="22" height="14">
   <object type="sprite" x="168" y="168" width="168" height="79">
    <properties>
     <property name="animation" value="1-5,1"/>
@@ -64,15 +56,6 @@
     <property name="mode" value="bounce"/>
     <property name="sheet" value="images/sprites/town/bar.png"/>
     <property name="width" value="168"/>
-   </properties>
-  </object>
-  <object type="sprite" x="359" y="212" width="72" height="72">
-   <properties>
-    <property name="animation" value="1-8,1|1-7,2"/>
-    <property name="depth" value="16"/>
-    <property name="height" value="72"/>
-    <property name="sheet" value="images/sprites/town/dealer.png"/>
-    <property name="width" value="72"/>
    </properties>
   </object>
   <object name="main" type="door" x="49" y="230" width="17" height="53">
@@ -84,7 +67,6 @@
   </object>
   <object name="pot" type="throwable" x="94" y="220" width="24" height="24"/>
   <object name="pot" type="throwable" x="140" y="219" width="24" height="24"/>
-  <object type="dealer" x="356" y="225" width="78" height="27"/>
   <object name="pot" type="throwable" x="107" y="229" width="24" height="24"/>
   <object name="pot" type="throwable" x="127" y="226" width="24" height="24"/>
   <object type="sprite" x="168" y="168" width="24" height="79">
@@ -98,5 +80,12 @@
   <object name="bottle" type="throwable" x="336" y="226" width="8" height="14"/>
   <object name="bottle" type="throwable" x="344" y="226" width="8" height="14"/>
   <object name="bottle" type="throwable" x="352" y="226" width="8" height="14"/>
+  <object name="throwingtorch" type="projectile" x="456" y="168" width="24" height="48">
+   <properties>
+    <property name="direction" value="left"/>
+    <property name="directory" value="weapons/"/>
+   </properties>
+  </object>
+  <object name="dealer" type="npc" x="360" y="216" width="72" height="66"/>
  </objectgroup>
 </map>
