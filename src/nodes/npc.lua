@@ -6,8 +6,8 @@ local sound = require 'vendor/TEsound'
 local fonts = require 'fonts'
 local utils = require 'utils'
 local Timer = require 'vendor/timer'
-local Player = require 'player'
-
+local game = require 'game'
+local Prompt = require 'prompt'
 local Menu = {}
 Menu.__index = Menu
 
@@ -242,9 +242,9 @@ function NPC.new(node, collider)
     npc.props = require('npcs/' .. node.name)
 
     npc.name = node.name
-    npc.type = node.type
 
     npc.busy = false
+    npc.dealer = npc.props.dealer or false
 
     --sets the position from the tmx file
     npc.position = {x = node.x, y = node.y}
@@ -362,10 +362,6 @@ end
 
 function NPC:enter( previous )
     if self.props.enter then self.props.enter(self, previous) end
-
-    -- Check player inventory on NPC creation
-    local player = Player.factory()
-    self:checkInventory(player)
 end
 
 ---
@@ -388,18 +384,39 @@ function NPC:keypressed( button, player )
     if self.dead or self.angry then return end
     
     if button == 'INTERACT' and self.menu.state == 'closed' and not player.jumping and not player.isClimbing and not self.busy then
-        player.freeze = true
-        player.character.state = 'idle'
-        self.state = 'default'
-        self.orig_direction = self.direction
-        if self.donotfacewhentalking then
-        elseif player.position.x < self.position.x then
-            self.direction = "left"
+        
+        if self.dealer then
+            player.freeze = true
+            local message = {'Choose a card game to play'}
+            local options = {'Poker', 'Blackjack', 'Exit'}
+            if player.money == 0 then
+                message = {'You dont have enough money!','Come back again...'}
+                options = {'Exit'}
+            end
+            local callback = function(result)
+                self.prompt = nil
+                player.freeze = false
+                if result == 'Poker' or result == 'Blackjack' then
+                  local screenshot = love.graphics.newImage( love.graphics.newScreenshot() )
+                  Gamestate.stack(result:lower() .. 'game', player, screenshot)
+                end
+            end
+            self.prompt = Prompt.new(message, callback, options)
+
         else
-            self.direction = "right"
+            player.freeze = true
+            player.character.state = 'idle'
+            self.state = 'default'
+            self.orig_direction = self.direction
+            if self.donotfacewhentalking then
+            elseif player.position.x < self.position.x then
+                self.direction = "left"
+            else
+                self.direction = "right"
+            end
+            self.menu:open(player)
+            if self.begin then self.begin(self, player) end
         end
-        self.menu:open(player)
-        if self.begin then self.begin(self, player) end
     else
         return self.menu:keypressed(button, player)
     end
@@ -468,6 +485,8 @@ function NPC:update(dt, player)
             self.direction = "right"
         end
     end
+    
+    self:checkInventory(player)
     
     if self.props.update then
         self.props.update(dt, self, player)
