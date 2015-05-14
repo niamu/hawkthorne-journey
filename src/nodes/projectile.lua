@@ -40,7 +40,9 @@ function Projectile.new(node, collider)
   proj.foreground = proj.props.foreground
 
   proj.collider = collider
-  proj.bb = collider:addRectangle(node.x, node.y, proj.props.width, proj.props.height ) -- use properties height to give proper size
+  local bb_width = proj.props.bb_width or proj.props.width
+  local bb_height = proj.props.bb_height or proj.props.height
+  proj.bb = collider:addRectangle(node.x, node.y, bb_width, bb_height ) -- use properties height to give proper size
   proj.bb.node = proj
   proj.start_x = node.x
   proj.explosive = false or proj.props.explosive

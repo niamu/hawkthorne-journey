@@ -5,6 +5,7 @@ return{
   friction = 1, --0.01 * game.step,
   width = 16,
   height = 16,
+  bb_width = 25,
   frameWidth = 24,
   frameHeight = 24,
   solid = true,
