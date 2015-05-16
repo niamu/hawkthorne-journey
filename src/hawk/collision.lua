@@ -322,7 +322,7 @@ function module.move_y(map, player, x, y, width, height, dx, dy)
           -- If the block is sloped, interpolate the y value to be correct
           if slope_y <= (new_y + height - tile_slope * dx + 2) and (slope_y >= y + height or not special) then
             if player.floor_pushback then
-              player:floor_pushback()
+              player:floor_pushback(tile)
             end
             return slope_y - height
           end
@@ -350,7 +350,7 @@ function module.move_y(map, player, x, y, width, height, dx, dy)
             end
           
             if player.floor_pushback then
-              player:floor_pushback()
+              player:floor_pushback(tile)
             end
             return slope_y - height
           end
@@ -375,7 +375,7 @@ function module.move_y(map, player, x, y, width, height, dx, dy)
           if y > tile_y and tile_y >= new_y then
             player.velocity.y = 0
             if player.ceiling_pushback then
-              player:ceiling_pushback()
+              player:ceiling_pushback(tile)
             end
             return tile_y
           end
