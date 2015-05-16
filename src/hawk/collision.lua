@@ -19,7 +19,8 @@ function module.platform_type(tile_id)
   if tile_id >= 26 and tile_id <= 51 then
     return 'oneway'
   end
-  if tile_id >= 0 and tile_id <= 25 then
+  -- Tile id 104 is a special block representing the breakable block
+  if tile_id >= 0 and tile_id <= 25 or tile_id == 104 then
     return 'block'
   end
 
@@ -222,7 +223,7 @@ function module.move_x(map, player, x, y, width, height, dx, dy)
         
           if new_x <= tile_x and tile_x <= x then
             if player.wall_pushback then
-              player:wall_pushback()
+              player:wall_pushback(tile)
             end
             return tile_x
           end
@@ -247,7 +248,7 @@ function module.move_x(map, player, x, y, width, height, dx, dy)
         
           if x <= tile_x and tile_x <= (new_x + width) then
             if player.wall_pushback then
-              player:wall_pushback()
+              player:wall_pushback(tile)
             end
             return tile_x - width
           end

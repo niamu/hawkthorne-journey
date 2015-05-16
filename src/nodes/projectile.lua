@@ -320,9 +320,13 @@ function Projectile:floor_pushback()
   if self.props.floor_collide then self.props.floor_collide(self) end
 end
 
-function Projectile:wall_pushback()
+function Projectile:wall_pushback(tile)
   if self.dead then return end
-  if self.solid then self:die() end
+  -- Tile id 104 corresponds to a breakable block
+  if self.solid and tile.id ~= 104 then
+    self:die()
+  end
+  
   self.velocity.y = self.velocity.y * self.friction
   self.velocity.x = -self.velocity.x * self.bounceFactor
 end
